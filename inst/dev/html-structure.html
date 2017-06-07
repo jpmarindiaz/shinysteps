@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+    .clickable {
+        cursor: pointer;
+    }
+    </style>
+</head>
+
+<body>
+    <pre id="debug" class="shiny-text-output noplaceholder"></pre>
+    <div class="col-sm-4">
+        <div id="sidebar">
+            <div id="sidebar_step1">
+                <div id="sidebar_step1_title" class="clickable">
+                    <h5>
+            FIRST
+            <span id="sidebar_step1_triangle-closed">
+              <i class="fa fa-caret-right fa-2x"></i>
+            </span>
+            <span id="sidebar_step1_triangle-open">
+              <i class="fa fa-caret-down fa-2x"></i>
+            </span>
+          </h5>
+                </div>
+                <div id="sidebar_step1_contents" class="clickable">
+                    <p>sidebar step1</p>
+                </div>
+            </div>
+            <div id="sidebar_step2">
+                <div id="sidebar_step2_title" class="clickable">
+                    <h5>
+            STEP 2
+            <span id="sidebar_step2_triangle-closed">
+              <i class="fa fa-caret-right fa-2x"></i>
+            </span>
+            <span id="sidebar_step2_triangle-open">
+              <i class="fa fa-caret-down fa-2x"></i>
+            </span>
+          </h5>
+                </div>
+                <div id="sidebar_step2_contents" class="clickable">
+                    <p>sidebar step2 contents</p>
+                </div>
+            </div>
+            <div id="sidebar_step3">
+                <div id="sidebar_step3_title" class="clickable">
+                    <h5>
+            STEP 3
+            <span id="sidebar_step3_triangle-closed">
+              <i class="fa fa-caret-right fa-2x"></i>
+            </span>
+            <span id="sidebar_step3_triangle-open">
+              <i class="fa fa-caret-down fa-2x"></i>
+            </span>
+          </h5>
+                </div>
+                <div id="sidebar_step3_contents" class="clickable">
+                    <p>sidebar step3 contents</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-8">
+        <div id="main">
+            <div id="main_step1">
+                <p>main step1</p>
+            </div>
+            <div id="main_step2">
+                <p>main step2</p>
+            </div>
+            <div id="main_step3">
+                <p>main step3</p>
+            </div>
+        </div>
+    </div>
+    <script>
+    var shinyStepIds = ['step1', 'step2', 'step3']
+    </script>
+    <script>
+    $(document).ready(function() {
+
+        var selector = ".clickable";
+        $(selector).click(function(e) {
+            // console.log(e)
+            var step = e.currentTarget.id;
+            step = step.replace("sidebar_", "");
+            step = step.replace("_title", "");
+            currentStep = step.replace("_contents", "");
+
+            toggleSteps(currentStep, shinyStepIds);
+        });
+
+    });
+
+    toggleSteps = function(currentStep, shinyStepIds) {
+        var otherSteps = shinyStepIds.filter(function(i) {
+            return i != currentStep
+        });
+
+        // Show current step - sidebar
+        $("#sidebar_" + currentStep + "_contents").show();
+        $("#sidebar_" + currentStep + "_triangle-closed").hide();
+        $("#sidebar_" + currentStep + "_triangle-open").show();
+        Shiny.onInputChange("shinyStepCurrent", currentStep);
+
+        // Hide all other steps - sidebar
+        otherSteps.map(function(s) {
+            console.log("hiding", s)
+            $("#sidebar_" + s + "_contents").hide();
+            $("#sidebar_" + s + "_triangle-open").hide();
+            $("#sidebar_" + s + "_triangle-closed").show();
+        });
+
+        // Show current step - main
+        $("#main_" + currentStep).show();
+
+        // Hide all other steps - main
+        otherSteps.map(function(s) {
+            $("#main_" + s).hide();
+        });
+    }
+
+    var Shiny = {};
+    Shiny.onInputChange = function(name, value) {
+        console.log(name, value)
+    }
+
+    Shiny.addCustomMessageHandler("mymessage", function(message) {
+        alert(message);
+    });
+
+    
+    </script>
+    <br/>
+</body>
+
+</html>
