@@ -1,3 +1,8 @@
+
+library(shinySteps)
+library(shinyjs)
+library(tidyverse)
+
 styles <- "
 .clickable{
 cursor: pointer;
@@ -10,7 +15,7 @@ cursor: pointer;
 ui <- stepsPage(
   verbatimTextOutput("debug"),
   uiOutput("buttons"),
-  stepsetPanel(initStep = "step1",
+  stepsetPanel(initStep = "step2",
     stepPanel(id="step1",
               sideBarStep(title = "FIRST",
                           p("sidebar step1")
@@ -35,6 +40,15 @@ ui <- stepsPage(
                 h3("main 3")
               )
     )
+    ,
+    stepPanel(id="step4",
+              sideBarStep(
+                p("step4 controls")
+              ),
+              mainStep(
+                h3("main 4")
+              )
+    )
   ),
   inlineCSS(styles),
   br()
@@ -46,7 +60,6 @@ server <- function(input,output,session){
   })
   output$buttons <- renderUI({
     tagList(
-      textInput("text", "Enter text", "Hello"),
       actionButton("btn", "go to step 3")
     )
   })
