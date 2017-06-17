@@ -8,7 +8,7 @@ toggleSteps = function(currentStep, shinyStepIds) {
     $("#sidebar_" + currentStep + "_triangle-closed").hide();
     $("#sidebar_" + currentStep + "_triangle-open").show();
     if (typeof Shiny != "undefined") {
-        Shiny.onInputChange("shinySteps_current", currentStep);
+        Shiny.onInputChange("shinysteps_current", currentStep);
     }
     // Hide all other steps - sidebar
     otherSteps.map(function(s) {
@@ -48,7 +48,7 @@ $(document).ready(function() {
     setTimeout(function() {
         toggleSteps(initStep, shinyStepIds);
         if (typeof Shiny != "undefined") {
-            Shiny.onInputChange("shinySteps_stepIds", shinyStepIds);
+            Shiny.onInputChange("shinysteps_stepIds", shinyStepIds);
         }
     }, 0);
 

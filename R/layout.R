@@ -39,7 +39,7 @@ stepsetPanel <- function(..., initStep = NULL){
                main
            )
     ),
-    shinyStepsJS(ids,initStep)
+    shinystepsJS(ids,initStep)
   )
 }
 
@@ -85,8 +85,8 @@ mainStep <- function(...){
   tagList(list(...))
 }
 
-shinyStepsJS <- function(ids,initStep){
-  jsfile <- system.file("js", "steps.js", package = "shinySteps")
+shinystepsJS <- function(ids,initStep){
+  jsfile <- system.file("js", "steps.js", package = "shinysteps")
   shinyStepIds <- paste0("var shinyStepIds = ['",paste0(ids,collapse = "','"),"']")
   #initStep <- paste0("toggleSteps('",initStep,"', shinyStepIds);\n")
   initStep <- paste0("var initStep = '",initStep,"';")

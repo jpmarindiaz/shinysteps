@@ -1,4 +1,4 @@
 library(testthat)
-suppressMessages(library(shinySteps))
+suppressMessages(library(shinysteps))
 
-test_check("shinySteps")
+test_check("shinysteps")

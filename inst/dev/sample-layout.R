@@ -1,5 +1,5 @@
 
-library(shinySteps)
+library(shinysteps)
 library(shinyjs)
 library(tidyverse)
 
@@ -56,7 +56,7 @@ ui <- stepsPage(
 
 server <- function(input,output,session){
   output$debug <- renderPrint({
-    input$shinySteps_current
+    input$shinysteps_current
   })
   output$buttons <- renderUI({
     tagList(
@@ -66,8 +66,8 @@ server <- function(input,output,session){
 
   observeEvent(input$btn, {
     nextStep <- "step3"
-    current <- input$shinySteps_current
-    steps <- input$shinySteps_stepIds
+    current <- input$shinysteps_current
+    steps <- input$shinysteps_stepIds
     session$sendCustomMessage("nextStep", nextStep)
   })
 
