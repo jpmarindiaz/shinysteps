@@ -33,6 +33,12 @@ $(document).ready(function() {
         toggleSteps(step, shinyStepIds);
     });
 
+console.log("only one step",shinyStepIds)
+    if(shinyStepIds.length == 1){
+        console.log("only one step",shinyStepIds)
+        $(".clickable").hide()
+    }
+
     var selector = ".clickable";
     $(selector).click(function(e) {
         // console.log(e)
