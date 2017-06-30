@@ -3,11 +3,6 @@ library(shinysteps)
 library(shinyjs)
 library(tidyverse)
 
-styles <- "
-.clickable{
-cursor: pointer;
-}
-"
 
 #js <- paste(readLines("../js/steps.js"),collapse = "\n")
 
@@ -50,7 +45,6 @@ ui <- stepsPage(
               )
     )
   ),
-  inlineCSS(styles),
   br()
 )
 

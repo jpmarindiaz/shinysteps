@@ -29,6 +29,7 @@ stepsetPanel <- function(..., initStep = NULL){
   main <-  map(steps,"main")
 
   tagList(
+    shinystepsCSS(),
     column(4,
            div(id="sidebar",
                sidebar
@@ -97,7 +98,19 @@ shinystepsJS <- function(ids,initStep){
       shinyStepIds,
       initStep,
       js
-    ,sep = "\n")
+      ,sep = "\n")
   )
-
 }
+
+shinystepsCSS <- function(){
+  styles <- "
+    .clickable{
+    cursor: pointer;
+    }
+  "
+  tags$style(
+    styles
+  )
+}
+
+
