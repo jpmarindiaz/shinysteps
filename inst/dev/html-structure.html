@@ -3,12 +3,78 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="cleartype" content="on">
+    <meta name="MobileOptimized" content="320">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
     <style>
+    /*Sideout*/
+    
+    body {
+        width: 100%;
+        height: 100%;
+    }
+
+    .fixed-header {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        height: 30px;
+        backface-visibility: hidden;
+        z-index: 2;
+        background-color: red;
+    }
+    
+    .slideout-menu {
+        position: fixed;
+        left: 0;
+        top: 30px;
+        bottom: 0;
+        right: 0;
+        z-index: 0;
+        width: 300px;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        display: none;
+    }
+    
+    .slideout-panel {
+        position: relative;
+        z-index: 1;
+        margin-top: 30px;
+        will-change: transform;
+    }
+    
+    .slideout-open,
+    .slideout-open body,
+    .slideout-open .slideout-panel {
+        overflow: hidden;
+    }
+    
+    .slideout-open .slideout-menu {
+        display: block;
+    }
+    /*ENABLE ONLY ON MOBILE*/
+    
+    @media screen and (min-width: 480px) {
+        .slideout-panel {
+            margin-left: 300px;
+        }
+        .slideout-menu {
+            display: block;
+        }
+        .btn-hamburger {
+            display: none;
+        }
+    }
+    /*Shiny Steps*/
+    
     .clickable {
         cursor: pointer;
     }
@@ -16,12 +82,13 @@
 </head>
 
 <body>
-    <pre id="debug" class="shiny-text-output noplaceholder"></pre>
-    <div class="col-sm-4">
-        <div id="sidebar">
-            <div id="sidebar_step1">
-                <div id="sidebar_step1_title" class="clickable">
-                    <h5>
+    <div class="fixed-header">
+        <span>This is a header</span>
+    </div>
+    <div id="sidebar">
+        <div id="sidebar_step1">
+            <div id="sidebar_step1_title" class="clickable">
+                <h5>
             FIRST
             <span id="sidebar_step1_triangle-closed">
               <i class="fa fa-caret-right fa-2x"></i>
@@ -30,14 +97,14 @@
               <i class="fa fa-caret-down fa-2x"></i>
             </span>
           </h5>
-                </div>
-                <div id="sidebar_step1_contents" class="clickable">
-                    <p>sidebar step1</p>
-                </div>
             </div>
-            <div id="sidebar_step2">
-                <div id="sidebar_step2_title" class="clickable">
-                    <h5>
+            <div id="sidebar_step1_contents" class="clickable">
+                <p>sidebar step1</p>
+            </div>
+        </div>
+        <div id="sidebar_step2">
+            <div id="sidebar_step2_title" class="clickable">
+                <h5>
             STEP 2
             <span id="sidebar_step2_triangle-closed">
               <i class="fa fa-caret-right fa-2x"></i>
@@ -46,14 +113,14 @@
               <i class="fa fa-caret-down fa-2x"></i>
             </span>
           </h5>
-                </div>
-                <div id="sidebar_step2_contents" class="clickable">
-                    <p>sidebar step2 contents</p>
-                </div>
             </div>
-            <div id="sidebar_step3">
-                <div id="sidebar_step3_title" class="clickable">
-                    <h5>
+            <div id="sidebar_step2_contents" class="clickable">
+                <p>sidebar step2 contents</p>
+            </div>
+        </div>
+        <div id="sidebar_step3">
+            <div id="sidebar_step3_title" class="clickable">
+                <h5>
             STEP 3
             <span id="sidebar_step3_triangle-closed">
               <i class="fa fa-caret-right fa-2x"></i>
@@ -62,30 +129,62 @@
               <i class="fa fa-caret-down fa-2x"></i>
             </span>
           </h5>
-                </div>
-                <div id="sidebar_step3_contents" class="clickable">
-                    <p>sidebar step3 contents</p>
-                </div>
+            </div>
+            <div id="sidebar_step3_contents" class="clickable">
+                <p>sidebar step3 contents</p>
             </div>
         </div>
     </div>
-    <div class="col-sm-8">
-        <div id="main">
-            <div id="main_step1">
-                <p>main step1</p>
-            </div>
-            <div id="main_step2">
-                <p>main step2</p>
-            </div>
-            <div id="main_step3">
-                <p>main step3</p>
-            </div>
+    <div id="main">
+        <button class="btn-hamburger">☰</button>
+        <div id="main_step1">
+            <p>main step1</p>
+        </div>
+        <div id="main_step2">
+            <p>main step2</p>
+        </div>
+        <div id="main_step3">
+            <p>main step3</p>
         </div>
     </div>
     <script>
     var shinyStepIds = ['step1', 'step2', 'step3']
     </script>
     <script>
+    // Sideout
+
+    var slideout = new Slideout({
+        'menu': document.getElementById('sidebar'),
+        'panel': document.getElementById('main'),
+        'side': 'left',
+        'padding': 300,
+        'tolerance': 70
+    });
+
+    // Toggle button
+    document.querySelector('.btn-hamburger').addEventListener('click', function() {
+        slideout.toggle();
+    });
+    // Enable touch
+    slideout.enableTouch();
+
+    // Show collapsed sidebar only on small screens
+    var jmediaquery = window.matchMedia("(min-width: 480px)")
+    jmediaquery.addListener(handleSmallScreen);
+    handleSmallScreen(jmediaquery);
+
+    function handleSmallScreen(jmediaquery) {
+        if (!jmediaquery.matches) {
+            // orientation changed
+            slideout.open();
+        } else {
+            slideout.close();
+        }
+    }
+
+
+
+    // Shinysteps
     $(document).ready(function() {
 
         var selector = ".clickable";
@@ -110,7 +209,10 @@
         $("#sidebar_" + currentStep + "_contents").show();
         $("#sidebar_" + currentStep + "_triangle-closed").hide();
         $("#sidebar_" + currentStep + "_triangle-open").show();
-        Shiny.onInputChange("shinyStepCurrent", currentStep);
+
+        if (typeof Shiny != "undefined") {
+            Shiny.onInputChange("shinyStepCurrent", currentStep);
+        }
 
         // Hide all other steps - sidebar
         otherSteps.map(function(s) {
@@ -129,16 +231,16 @@
         });
     }
 
-    var Shiny = {};
-    Shiny.onInputChange = function(name, value) {
-        console.log(name, value)
+    if (typeof Shiny != "undefined") {
+        var Shiny = {};
+        Shiny.onInputChange = function(name, value) {
+            console.log(name, value)
+        }
+
+        Shiny.addCustomMessageHandler("mymessage", function(message) {
+            alert(message);
+        });
     }
-
-    Shiny.addCustomMessageHandler("mymessage", function(message) {
-        alert(message);
-    });
-
-    
     </script>
     <br/>
 </body>

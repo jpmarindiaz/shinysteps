@@ -4,15 +4,12 @@ library(shinyjs)
 library(tidyverse)
 
 
-#js <- paste(readLines("../js/steps.js"),collapse = "\n")
-
-
 ui <- stepsPage(
-  verbatimTextOutput("debug"),
-  uiOutput("buttons"),
-  stepsetPanel(initStep = "step1",
+  stepsHeader(show = FALSE),
+  stepsBody(initStep = "step1",
                stepPanel(id="step1",
                          sideBarStep(title = "FIRST",
+                                     verbatimTextOutput("debug"),
                                      p("sidebar step1")
                          ),
                          mainStep(

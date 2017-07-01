@@ -1,3 +1,57 @@
+// Sideout
+// https://github.com/mango/slideout
+
+var slideout = new Slideout({
+    'menu': document.getElementById('sidebar'),
+    'panel': document.getElementById('main'),
+    'side': 'left',
+    'padding': 300,
+    'tolerance': 70
+});
+
+// Toggle button
+document.querySelector('.btn-hamburger').addEventListener('click', function() {
+    slideout.toggle();
+});
+// Enable touch
+slideout.enableTouch();
+
+// Show collapsed sidebar only on small screens
+var jmediaquery = window.matchMedia("(min-width: 480px)")
+jmediaquery.addListener(handleSmallScreen);
+handleSmallScreen(jmediaquery);
+
+function handleSmallScreen(jmediaquery) {
+    if (!jmediaquery.matches) {
+        // orientation changed
+        slideout.open();
+    } else {
+        slideout.close();
+    }
+}
+
+// Shinystep Opts
+
+// var shinyStepIds = ['NULL','step1','step2','step3','step4']
+// var initStep = 'step2';
+// var headerOpts = {"height":30,"show":true}
+
+if(shinyStepIds.length == 1){
+    $(".clickable").css("cursor", "auto");
+}
+
+if (!headerOpts.show) {
+    $(".fixed-header").hide();
+    $('.slideout-menu').css("top", "0px");
+    $('.slideout-panel').css("margin-top", "0px");
+} else {
+    $('.fixed-header').css("height", headerOpts.height + "px");
+    $('.slideout-menu').css("top", headerOpts.height + "px");
+    $('.slideout-panel').css("margin-top", headerOpts.height + "px");
+}
+
+// Shinysteps
+
 toggleSteps = function(currentStep, shinyStepIds) {
     var otherSteps = shinyStepIds.filter(function(i) {
         return i != currentStep
@@ -28,14 +82,19 @@ toggleSteps = function(currentStep, shinyStepIds) {
 
 $(document).ready(function() {
 
-    Shiny.addCustomMessageHandler("nextStep", function(step) {
-        console.log(step);
-        toggleSteps(step, shinyStepIds);
-    });
+    if (typeof Shiny != "undefined") {
+        // Shiny.addCustomMessageHandler("ids", function(s) {
+        //     console.log("IDS", s);
+        // });
 
-console.log("only one step",shinyStepIds)
-    if(shinyStepIds.length == 1){
-        console.log("only one step",shinyStepIds)
+        Shiny.addCustomMessageHandler("nextStep", function(step) {
+            console.log(step);
+            toggleSteps(step, shinyStepIds);
+        });
+    }
+
+    if (shinyStepIds.length == 1) {
+        console.log("only one step", shinyStepIds)
         $(".clickable").hide()
     }
 

@@ -1,21 +1,47 @@
 
 #' @export
-stepsPage <- function(...){
+stepsPage <- function(stepsHeader, stepsBody, skin = "magenta", styles = ""){
   deps <- list(
     htmlDependency("font-awesome", "4.1.0",
                    src = c(href = "//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/"),
                    stylesheet = "font-awesome.min.css"
+    ),
+    htmlDependency("slideout", "1.0.1",
+                   src = (file = system.file("js", package = "shinysteps")),
+                   meta = '
+        <meta http-equiv="cleartype" content="on">
+        <meta name="MobileOptimized" content="320">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">',
+                   script = "slideout.min.js"
+    ),
+    htmlDependency("stepsCSS", "0.0.1",
+                   src = (file = system.file("css", package = "shinysteps")),
+                   stylesheet = "shinysteps.css"
     )
   )
-  steps <- list(...)
-  page <- shiny::bootstrapPage(steps)
+
+  jsfile <- system.file("js", "steps.js", package = "shinysteps")
+  stepsJS <- tags$script(paste0(readLines(jsfile),collapse="\n"))
+
+  page <- shiny::bootstrapPage(stepsHeader,stepsBody,stepsJS,stepsCSS(styles))
+
   old <- attr(page, "html_dependencies", TRUE)
   htmlDependencies(page) <- c(old, deps)
   page
 }
 
 #' @export
-stepsetPanel <- function(..., initStep = NULL){
+stepsHeader <- function(..., height = NULL, show = TRUE){
+  div(class="fixed-header",
+    ...,
+    stepsHeaderJS(height = height, show = show)
+    )
+}
+
+#' @export
+stepsBody <- function(..., initStep = NULL){
   steps <- list(...)
   ids <- map(steps,"id")
 
@@ -29,18 +55,14 @@ stepsetPanel <- function(..., initStep = NULL){
   main <-  map(steps,"main")
 
   tagList(
-    shinystepsCSS(sideBarClickable = length(ids) != 1),
-    column(4,
-           div(id="sidebar",
-               sidebar
-           )
+    div(id="sidebar",
+        sidebar
     ),
-    column(8,
-           div(id = "main",
-               main
-           )
+    div(id = "main",
+        tags$button(class = "btn-hamburger","="),
+        main
     ),
-    shinystepsJS(ids,initStep)
+    stepsBodyJS(ids,initStep)
   )
 }
 
@@ -86,32 +108,23 @@ mainStep <- function(...){
   tagList(list(...))
 }
 
-shinystepsJS <- function(ids,initStep){
-  jsfile <- system.file("js", "steps.js", package = "shinysteps")
-  shinyStepIds <- paste0("var shinyStepIds = ['",paste0(ids,collapse = "','"),"']")
-  #initStep <- paste0("toggleSteps('",initStep,"', shinyStepIds);\n")
-  initStep <- paste0("var initStep = '",initStep,"';")
-  js <- paste0(readLines(jsfile),collapse="\n")
+stepsHeaderJS <- function(height, show){
+  headerOpts <- list(
+    height = height,
+    show = show
+  )
+  tags$script(paste0("var headerOpts = ",jsonlite::toJSON(headerOpts,auto_unbox = TRUE)),";")
+}
 
+stepsBodyJS <- function(ids,initStep){
+  shinyStepIds <- paste0("var shinyStepIds = ['",paste0(ids,collapse = "','"),"']")
+  initStep <- paste0("var initStep = '",initStep,"';")
   tags$script(
-    paste(
-      shinyStepIds,
-      initStep,
-      js
-      ,sep = "\n")
+    paste(shinyStepIds,initStep,sep = "\n")
   )
 }
 
-shinystepsCSS <- function(sideBarClickable = TRUE){
-  styles <- ""
-  if(sideBarClickable){
-    styles <- "
-    .clickable{
-    cursor: pointer;
-    }
-  "
-
-  }
+stepsCSS <- function(styles = ""){
   tags$style(
     styles
   )

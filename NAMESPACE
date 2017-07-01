@@ -3,5 +3,6 @@
 export(mainStep)
 export(sideBarStep)
 export(stepPanel)
+export(stepsBody)
+export(stepsHeader)
 export(stepsPage)
-export(stepsetPanel)
