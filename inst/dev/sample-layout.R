@@ -3,7 +3,7 @@ library(shinysteps)
 library(shinyjs)
 library(tidyverse)
 
-styles <- "#sidebar{background-color: #f9f9f9"
+styles <- "#sidebar{background-color: #f9f9f9}"
 
 ui <- stepsPage(skin = "magenta",styles = styles,
   stepsHeader(show = FALSE, height = 150,
