@@ -7,25 +7,38 @@ stepsPage <- function(stepsHeader, stepsBody, skin = "magenta", styles = ""){
                    stylesheet = "font-awesome.min.css"
     ),
     htmlDependency("slideout", "1.0.1",
-                   src = (file = system.file("js", package = "shinysteps")),
-                   meta = '
-        <meta http-equiv="cleartype" content="on">
-        <meta name="MobileOptimized" content="320">
-        <meta name="HandheldFriendly" content="True">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">',
+                   src = (file = system.file("srcjs", package = "shinysteps")),
+                   meta = list(
+                     MobileOptimized = "320",
+                     HandheldFriendly = "True",
+                     "apple-mobile-web-app-capable" = "yes",
+                     viewport = "width=device-width, initial-scale=1.0, user-scalable=no"
+                   ),
+        #            meta = '
+        # <meta http-equiv="cleartype" content="on">
+        # <meta name="MobileOptimized" content="320">
+        # <meta name="HandheldFriendly" content="True">
+        # <meta name="apple-mobile-web-app-capable" content="yes">
+        # <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">',
                    script = "slideout.min.js"
     ),
+    # htmlDependency("input_binding", "0.0.0",
+    #                src = (file = system.file("js", package = "shinysteps")),
+    #                script = "input_binding_steps.js"
+    # ),
     htmlDependency("stepsCSS", "0.0.1",
                    src = (file = system.file("css", package = "shinysteps")),
                    stylesheet = "shinysteps.css"
     )
   )
 
-  jsfile <- system.file("js", "steps.js", package = "shinysteps")
+  jsfile <- system.file("srcjs", "steps.js", package = "shinysteps")
   stepsJS <- tags$script(paste0(readLines(jsfile),collapse="\n"))
+  bindingJsfile <- system.file("srcjs", "input_binding_steps.js", package = "shinysteps")
+  bindingJS <- tags$script(paste0(readLines(bindingJsfile),collapse="\n"))
 
-  page <- shiny::bootstrapPage(stepsHeader,stepsBody,stepsJS,stepsCSS(styles))
+  #page <- shiny::bootstrapPage(stepsHeader,stepsBody,stepsJS,stepsCSS(styles))
+  page <- shiny::bootstrapPage(stepsHeader,stepsBody,stepsJS,bindingJS,stepsCSS(styles))
 
   old <- attr(page, "html_dependencies", TRUE)
   htmlDependencies(page) <- c(old, deps)
@@ -35,9 +48,9 @@ stepsPage <- function(stepsHeader, stepsBody, skin = "magenta", styles = ""){
 #' @export
 stepsHeader <- function(..., height = NULL, show = TRUE){
   div(class="fixed-header",
-    ...,
-    stepsHeaderJS(height = height, show = show)
-    )
+      ...,
+      stepsHeaderJS(height = height, show = show)
+  )
 }
 
 #' @export
@@ -55,14 +68,16 @@ stepsBody <- function(..., initStep = NULL){
   main <-  map(steps,"main")
 
   tagList(
-    div(id="sidebar",
-        sidebar
-    ),
-    div(id = "main",
-        tags$button(class = "btn-hamburger","="),
-        main
-    ),
-    stepsBodyJS(ids,initStep)
+    div(id = "stepsPage",
+        div(id="sidebar",
+            sidebar
+        ),
+        div(id = "main",
+            tags$button(class = "btn-hamburger","="),
+            main
+        ),
+        stepsBodyJS(ids,initStep)
+    )
   )
 }
 

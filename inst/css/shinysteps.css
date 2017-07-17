@@ -6,6 +6,10 @@ FONTS
 /*@import url(//fonts.googleapis.com/css?family=Kaushan+Script);*/
 
 
+.hidden{
+    display: none;
+}
+
 /*Sideout*/
 
 body {

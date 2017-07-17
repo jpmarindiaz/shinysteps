@@ -87,15 +87,15 @@ $(document).ready(function() {
         //     console.log("IDS", s);
         // });
 
-        Shiny.addCustomMessageHandler("nextStep", function(step) {
-            console.log(step);
-            toggleSteps(step, shinyStepIds);
-        });
+        // Shiny.addCustomMessageHandler("nextStep", function(step) {
+        //     console.log(step);
+        //     toggleSteps(step, shinyStepIds);
+        // });
     }
 
     if (shinyStepIds.length == 1) {
         console.log("only one step", shinyStepIds)
-        $(".clickable").hide()
+        // $(".clickable").hide()
     }
 
     var selector = ".clickable";
@@ -105,13 +105,13 @@ $(document).ready(function() {
         step = step.replace("sidebar_", "");
         step = step.replace("_title", "");
         currentStep = step.replace("_contents", "");
-        toggleSteps(currentStep, shinyStepIds);
+        // toggleSteps(currentStep, shinyStepIds);
     });
 
     // toggleSteps(initStep, shinyStepIds); 
     // weird see https://groups.google.com/forum/#!topic/shiny-discuss/sDhULZUt03A
     setTimeout(function() {
-        toggleSteps(initStep, shinyStepIds);
+        // toggleSteps(initStep, shinyStepIds);
         if (typeof Shiny != "undefined") {
             Shiny.onInputChange("shinysteps_stepIds", shinyStepIds);
         }
