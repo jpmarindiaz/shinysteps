@@ -7,16 +7,16 @@ stepsPage <- function(stepsBody, skin = "magenta", styles = ""){
                    src = c(href = "//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/"),
                    stylesheet = "font-awesome.min.css"
     ),
-    # htmlDependency("slideout", "1.0.1",
-    #                src = (file = system.file("srcjs", package = "shinysteps")),
-    #                meta = list(
-    #                  MobileOptimized = "320",
-    #                  HandheldFriendly = "True",
-    #                  "apple-mobile-web-app-capable" = "yes",
-    #                  viewport = "width=device-width, initial-scale=1.0, user-scalable=no"
-    #                ),
-    #                script = "slideout.min.js"
-    # ),
+    htmlDependency("slideout", "1.0.1",
+                   src = (file = system.file("srcjs", package = "shinysteps")),
+                   meta = list(
+                     MobileOptimized = "320",
+                     HandheldFriendly = "True",
+                     "apple-mobile-web-app-capable" = "yes",
+                     viewport = "width=device-width, initial-scale=1.0, user-scalable=no"
+                   ),
+                   script = "slideout.min.js"
+    ),
     # htmlDependency("steps-extend", "0.0.0",
     #                src = (file = system.file("srcjs", package = "shinysteps")),
     #                script = "steps-extend.js"
@@ -52,84 +52,6 @@ stepsHeader <- function(..., height = NULL, show = TRUE){
 
 #' @export
 stepsBody <- function(..., initStep = NULL){
-  stepsExtendJS <- paste0(readLines(system.file("srcjs/steps-extend.js",package = "shinysteps")),
-                          collapse = "\n")
-
-  stepsExtendJS <- '
-
-
-  toggleSteps = function() {
-
-
-  var shinyStepIds = $("#sidebar").children().map(function(){
-  return this.id
-  }).toArray();
-  console.log("stepIds",shinyStepIds)
-  var shinyStepIds = ["step1","step2"];
-
-  var currentStep = $(".step.active")[0].id;
-  currentStep = currentStep.replace("sidebar_", "");
-  console.log("toggleCurrent", currentStep);
-
-  var otherSteps = shinyStepIds.filter(function(i) {
-  return i != currentStep
-  });
-
-  console.log("OtherSteps", otherSteps)
-
-  // Show current step - sidebar
-  $("#sidebar_" + currentStep + "_contents").show();
-  $("#sidebar_" + currentStep + "_triangle-closed").hide();
-  $("#sidebar_" + currentStep + "_triangle-open").show();
-
-  // if (typeof Shiny != "undefined") {
-  //     Shiny.onInputChange("shinysteps_current", currentStep);
-  // }
-
-  // Hide all other steps - sidebar
-  otherSteps.map(function(s) {
-  $("#sidebar_" + s + "_contents").hide();
-  $("#sidebar_" + s + "_triangle-open").hide();
-  $("#sidebar_" + s + "_triangle-closed").show();
-  });
-
-  // Show current step - main
-  $("#main_" + currentStep).show();
-
-  // Hide all other steps - main
-  otherSteps.map(function(s) {
-  $("#main_" + s).hide();
-  });
-
-  Shiny.onInputChange("step_current", currentStep);
-
-  }
-
-
-
-  shinyjs.toggleSteps = function(params){
-
-  var selector = ".clickable";
-  $(selector).click(function(e) {
-  console.log("CLICK",e)
-  var step = e.currentTarget.id;
-  step = step.replace("sidebar_", "");
-  step = step.replace("_title", "");
-  currentStep = step.replace("_contents", "");
-
-  $(".step").removeClass("active");
-
-  // console.log("THIS", $(this)[0].id)
-  var step = $(this)[0].id;
-  step = step.replace("_title", "");
-  // console.log("step class", "#" + step)
-  $("#" + step).addClass("active");
-
-  toggleSteps();
-  //return currentStep;
-  });
-  }
-  '
 
   steps <- list(...)
   ids <- map(steps,"id")
@@ -146,12 +68,13 @@ stepsBody <- function(..., initStep = NULL){
   tagList(
     #div(id = "stepsPage",
       useShinyjs(),
-      column(3,
+      #column(3,
              div(id="sidebar",
                  sidebar
-             )
+       #      )
       ),
-      column(9,
+      #column(9,
+             div(id = "main",
              tags$button(class = "btn-hamburger","="),
              # tabsetPanel(id = "tabs", type = "pills",
              #             unlist(main, recursive = FALSE)
@@ -160,7 +83,8 @@ stepsBody <- function(..., initStep = NULL){
                                       unlist(main, recursive = FALSE))
              ),
              stepsBodyJS(ids,initStep)
-    )
+             )
+    #)
     #extendShinyjs(text = stepsExtendJS)
     #inlineCSS(styles)
   )
@@ -170,7 +94,7 @@ stepsBody <- function(..., initStep = NULL){
 stepPanel <- function(id, sidebarStep, mainStep){
   list(
     id = id,
-    sidebar = div(id=paste0("sidebar_",id),
+    sidebar = div(id=paste0("sidebar_",id), class = "step active",
                   buildSidebarStep(id,sidebarStep$title,sidebarStep$contents)
     ),
     main = buildMainStep(id, mainStep$title, mainStep$contents)
@@ -198,8 +122,8 @@ buildSidebarStep <- function(stepId, title = NULL, contents){
            span(id=paste0("sidebar_",stepId,"_triangle-closed"),
                 icon("chevron-right", class = "fa-1x")
            ),
-           hidden(span(id=paste0("sidebar_",stepId,"_triangle-open"),
-                       icon("chevron-down", class = "fa-1x"))
+           span(id=paste0("sidebar_",stepId,"_triangle-open"),
+                       icon("chevron-down", class = "fa-1x")
            )
         )
     ),

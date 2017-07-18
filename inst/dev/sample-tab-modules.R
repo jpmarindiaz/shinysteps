@@ -23,28 +23,28 @@ ui <- stepsPage(skin = "magenta",styles = styles,
                           stepPanel(id="step1",
                                     sidebarStep(title = "Cargar Datos",
                                                 p("sidebar step1"),
-                                                # tableInputUI("dataIn", choices = list("Copiar & Pegar"="pasted",
-                                                #                                       "Cargar"="fileUpload",
-                                                #                                       "Muestra"="sampleData"),
-                                                #              selected = "sampleData"),
-                                                #verbatimTextOutput("debugData"),
+                                                tableInputUI("dataIn", choices = list("Copiar & Pegar"="pasted",
+                                                                                      "Cargar"="fileUpload",
+                                                                                      "Muestra"="sampleData"),
+                                                             selected = "sampleData"),
+                                                verbatimTextOutput("debugData"),
                                                 br()
                                     ),
                                     mainStep(title = "Datos",
-                                             p("Main step1")
-                                      #uiOutput("dataMain")
+                                             p("Main step1"),
+                                      uiOutput("dataMain")
                                     )
                           ),
                           stepPanel(id="step2",
                                     sidebarStep(title = "Visualizar",
                                                 p("sidebar step2"),
-                                                #verbatimTextOutput("debugViz"),
-                                                #uiOutput("vizSide"),
+                                                verbatimTextOutput("debugViz"),
+                                                uiOutput("vizSide"),
                                                 br()
                                     ),
                                     mainStep(title = "Visualización",
-                                             p("MAIN VIZ")
-                                      #uiOutput("vizMain")
+                                             p("MAIN VIZ"),
+                                      uiOutput("vizMain")
                                     )
                           )
                 )
@@ -118,7 +118,7 @@ server <- function(input,output,session){
   #   steps <- input$shinysteps_stepIds
   #   session$sendCustomMessage("nextStep", nextStep)
   # })
-  #
+
   # observe({
   #   js$togglePages()
   # })

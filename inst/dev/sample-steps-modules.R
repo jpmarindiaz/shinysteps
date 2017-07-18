@@ -45,7 +45,7 @@ ui <- stepsPage(skin = "magenta",styles = styles,
                                                                                 "Cargar"="fileUpload",
                                                                                 "Muestra"="sampleData"),
                                                        selected = "sampleData"),
-                                          #verbatimTextOutput("debugData"),
+                                          verbatimTextOutput("debugData"),
                                           br()
                               ),
                               mainStep(
@@ -88,7 +88,8 @@ server <- function(input,output,session){
   output$debug <- renderPrint({
     #str(data())
     #input$shinysteps_current
-    currentStep()
+    #currentStep()
+    input$step
   })
 
   output$dataMain <- renderUI({
@@ -126,16 +127,16 @@ server <- function(input,output,session){
     )
   })
 
-  observeEvent(input$btn_visualize, {
-    nextStep <- "step2"
-    current <- input$shinysteps_current
-    steps <- input$shinysteps_stepIds
-    session$sendCustomMessage("nextStep", nextStep)
-  })
+  # observeEvent(input$btn_visualize, {
+  #   nextStep <- "step2"
+  #   current <- input$shinysteps_current
+  #   steps <- input$shinysteps_stepIds
+  #   session$sendCustomMessage("nextStep", nextStep)
+  # })
 
-  observe({
-    js$togglePages()
-  })
+  # observe({
+  #   js$togglePages()
+  # })
 
 }
 
