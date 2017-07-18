@@ -8,56 +8,47 @@ library(dsAppModules)
 styles <- "#sidebar{background-color: #f9f9f9}"
 
 
-jsCode <- '
-shinyjs.togglePages = function(params){
-
-var selector = ".clickable";
-$(selector).click(function(e) {
-// console.log(e)
-var step = e.currentTarget.id;
-step = step.replace("sidebar_", "");
-step = step.replace("_title", "");
-currentStep = step.replace("_contents", "");
-toggleSteps(currentStep, shinyStepIds);
-});
-
-}
-'
-
 jsCode <- ''
 
 
-ui <- fluidPage(
-  tabsetPanel(
-    tabPanel("Datos",
-             fluidRow(
-               column(4,
-                      tableInputUI("dataIn", choices = list("Copiar & Pegar"="pasted",
-                                                            "Cargar"="fileUpload",
-                                                            "Muestra"="sampleData"),
-                                   selected = "sampleData"),
-                      #verbatimTextOutput("debugData"),
-                      br()
-               ),
-               column(8,
-                      uiOutput("dataMain")
-               )
-             )
-    ),
-    tabPanel("Visualización",
-             fluidRow(
-               column(4,
-                      verbatimTextOutput("debugViz"),
-                      uiOutput("vizSide")
-               ),
-               column(8,
-                      p("vizMain")
-               )
-             )
-    )
-  )
-)
 
+ui <- stepsPage(skin = "magenta",styles = styles,
+                # stepsHeader(show = FALSE, height = 0,
+                #             #useShinyjs(),
+                #             #extendShinyjs(text = jsCode),
+                #             #verbatimTextOutput("debug"),
+                #             br()
+                # ),
+                stepsBody(initStep = "step1",
+                          stepPanel(id="step1",
+                                    sidebarStep(title = "Cargar Datos",
+                                                p("sidebar step1"),
+                                                # tableInputUI("dataIn", choices = list("Copiar & Pegar"="pasted",
+                                                #                                       "Cargar"="fileUpload",
+                                                #                                       "Muestra"="sampleData"),
+                                                #              selected = "sampleData"),
+                                                #verbatimTextOutput("debugData"),
+                                                br()
+                                    ),
+                                    mainStep(title = "Datos",
+                                             p("Main step1")
+                                      #uiOutput("dataMain")
+                                    )
+                          ),
+                          stepPanel(id="step2",
+                                    sidebarStep(title = "Visualizar",
+                                                p("sidebar step2"),
+                                                #verbatimTextOutput("debugViz"),
+                                                #uiOutput("vizSide"),
+                                                br()
+                                    ),
+                                    mainStep(title = "Visualización",
+                                             p("MAIN VIZ")
+                                      #uiOutput("vizMain")
+                                    )
+                          )
+                )
+)
 
 
 
@@ -114,21 +105,23 @@ server <- function(input,output,session){
     )
   })
 
-  output$vizMain <- renderText({
+  output$vizMain <- renderUI({
     data <- data()
-    str(data)
+    tagList(
+      renderPrint(str(data))
+    )
   })
 
-  observeEvent(input$btn_visualize, {
-    nextStep <- "step2"
-    current <- input$shinysteps_current
-    steps <- input$shinysteps_stepIds
-    session$sendCustomMessage("nextStep", nextStep)
-  })
-
-  observe({
-    js$togglePages()
-  })
+  # observeEvent(input$btn_visualize, {
+  #   nextStep <- "step2"
+  #   current <- input$shinysteps_current
+  #   steps <- input$shinysteps_stepIds
+  #   session$sendCustomMessage("nextStep", nextStep)
+  # })
+  #
+  # observe({
+  #   js$togglePages()
+  # })
 
 }
 

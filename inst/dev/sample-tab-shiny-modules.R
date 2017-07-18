@@ -9,8 +9,6 @@ styles <- "#sidebar{background-color: #f9f9f9}"
 
 
 jsCode <- '
-
-
 shinyjs.togglePages = function(params){
 
 var selector = ".clickable";
@@ -29,40 +27,37 @@ toggleSteps(currentStep, shinyStepIds);
 jsCode <- ''
 
 
-ui <- stepsPage(skin = "magenta",styles = styles,
-          stepsHeader(show = TRUE, height = 50,
-                      #useShinyjs(),
-                      #extendShinyjs(text = jsCode),
-                      verbatimTextOutput("debug"),
-
+ui <- fluidPage(
+  tabsetPanel(
+    tabPanel("Datos",
+             fluidRow(
+               column(4,
+                      tableInputUI("dataIn", choices = list("Copiar & Pegar"="pasted",
+                                                            "Cargar"="fileUpload",
+                                                            "Muestra"="sampleData"),
+                                   selected = "sampleData"),
+                      #verbatimTextOutput("debugData"),
                       br()
-          ),
-          stepsBody(initStep = "step1",
-                    stepPanel(id="step1",
-                              sideBarStep(title = "Cargar Datos",
-                                          #p("sidebar step1"),
-                                          tableInputUI("dataIn", choices = list("Copiar & Pegar"="pasted",
-                                                                                "Cargar"="fileUpload",
-                                                                                "Muestra"="sampleData"),
-                                                       selected = "sampleData"),
-                                          #verbatimTextOutput("debugData"),
-                                          br()
-                              ),
-                              mainStep(
-                                uiOutput("dataMain")
-                              )
-                    ),
-                    stepPanel(id="step2",
-                              sideBarStep(title = "Visualizar",
-                                          verbatimTextOutput("debugViz"),
-                                          uiOutput("vizSide")
-                              ),
-                              mainStep(
-                                uiOutput("vizMain")
-                              )
-                    )
-          )
+               ),
+               column(8,
+                      uiOutput("dataMain")
+               )
+             )
+    ),
+    tabPanel("Visualización",
+             fluidRow(
+               column(4,
+                      verbatimTextOutput("debugViz"),
+                      uiOutput("vizSide")
+               ),
+               column(8,
+                      p("vizMain")
+               )
+             )
+    )
+  )
 )
+
 
 
 
@@ -119,11 +114,9 @@ server <- function(input,output,session){
     )
   })
 
-  output$vizMain <- renderUI({
+  output$vizMain <- renderText({
     data <- data()
-    tagList(
-      renderPrint(str(data))
-    )
+    str(data)
   })
 
   observeEvent(input$btn_visualize, {

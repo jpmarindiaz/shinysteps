@@ -9,7 +9,8 @@ Description: Steps layout
 Depends:
     R (>= 3.1.2),
     htmltools,
-    shiny
+    shiny,
+    shinyjs
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
