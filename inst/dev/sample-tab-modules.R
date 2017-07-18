@@ -119,16 +119,16 @@ server <- function(input,output,session){
     str(data)
   })
 
-  observeEvent(input$btn_visualize, {
-    nextStep <- "step2"
-    current <- input$shinysteps_current
-    steps <- input$shinysteps_stepIds
-    session$sendCustomMessage("nextStep", nextStep)
-  })
+  # observeEvent(input$btn_visualize, {
+  #   nextStep <- "step2"
+  #   current <- input$shinysteps_current
+  #   steps <- input$shinysteps_stepIds
+  #   session$sendCustomMessage("nextStep", nextStep)
+  # })
 
-  observe({
-    js$togglePages()
-  })
+  # observe({
+  #   js$togglePages()
+  # })
 
 }
 

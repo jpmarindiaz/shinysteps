@@ -22,23 +22,24 @@ stepsPage <- function(stepsHeader, stepsBody, skin = "magenta", styles = ""){
         # <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">',
                    script = "slideout.min.js"
     ),
-    # htmlDependency("input_binding", "0.0.0",
-    #                src = (file = system.file("js", package = "shinysteps")),
-    #                script = "input_binding_steps.js"
-    # ),
+    htmlDependency("stepsjs", "0.0.0",
+                   src = (file = system.file("srcjs", package = "shinysteps")),
+                   script = "steps2.js"
+    ),
     htmlDependency("stepsCSS", "0.0.1",
                    src = (file = system.file("css", package = "shinysteps")),
                    stylesheet = "shinysteps.css"
     )
   )
 
-  jsfile <- system.file("srcjs", "steps.js", package = "shinysteps")
+  jsfile <- system.file("srcjs", "slideout-opts.js", package = "shinysteps")
   stepsJS <- tags$script(paste0(readLines(jsfile),collapse="\n"))
-  bindingJsfile <- system.file("srcjs", "input_binding_steps.js", package = "shinysteps")
-  bindingJS <- tags$script(paste0(readLines(bindingJsfile),collapse="\n"))
+  # bindingJsfile <- system.file("srcjs", "input_binding_steps.js", package = "shinysteps")
+  # bindingJS <- tags$script(paste0(readLines(bindingJsfile),collapse="\n"))
 
-  #page <- shiny::bootstrapPage(stepsHeader,stepsBody,stepsJS,stepsCSS(styles))
-  page <- shiny::bootstrapPage(stepsHeader,stepsBody,stepsJS,bindingJS,stepsCSS(styles))
+  #page <- shiny::bootstrapPage(stepsHeader,stepsBody,stepsCSS(styles))
+  page <- shiny::bootstrapPage(stepsHeader,stepsBody,stepsJS,stepsCSS(styles))
+  #page <- shiny::bootstrapPage(stepsHeader,stepsBody,stepsJS,bindingJS,stepsCSS(styles))
 
   old <- attr(page, "html_dependencies", TRUE)
   htmlDependencies(page) <- c(old, deps)
@@ -85,7 +86,7 @@ stepsBody <- function(..., initStep = NULL){
 stepPanel <- function(id, sideBarStep, mainStep){
   list(
     id = id,
-    sidebar = div(id=paste0("sidebar_",id),
+    sidebar = div(id=paste0("sidebar_",id), class = "step active",
                   buildSideBarStep(id,sideBarStep$title,sideBarStep$contents)
     ),
     main = div(id=paste0("main_",id),mainStep)
