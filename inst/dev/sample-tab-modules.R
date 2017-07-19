@@ -13,13 +13,14 @@ jsCode <- ''
 
 
 ui <- stepsPage(skin = "magenta",styles = styles,
-                # stepsHeader(show = FALSE, height = 0,
-                #             #useShinyjs(),
-                #             #extendShinyjs(text = jsCode),
-                #             #verbatimTextOutput("debug"),
-                #             br()
-                # ),
-                stepsBody(initStep = "step1",
+                stepsHeader(show = TRUE, height = 50,
+                            #useShinyjs(),
+                            #extendShinyjs(text = jsCode),
+                            verbatimTextOutput("debug"),
+                            #pagerButtons("hola","Prev","Next"),
+                            br()
+                ),
+                stepsBody(selected = "step2",
                           stepPanel(id="step1",
                                     sidebarStep(title = "Cargar Datos",
                                                 p("sidebar step1"),
@@ -32,7 +33,8 @@ ui <- stepsPage(skin = "magenta",styles = styles,
                                     ),
                                     mainStep(title = "Datos",
                                              p("Main step1"),
-                                      uiOutput("dataMain")
+                                             uiOutput("dataMain"),
+                                             pagerButtons("hola","Prev","Next")
                                     )
                           ),
                           stepPanel(id="step2",
@@ -44,7 +46,7 @@ ui <- stepsPage(skin = "magenta",styles = styles,
                                     ),
                                     mainStep(title = "Visualización",
                                              p("MAIN VIZ"),
-                                      uiOutput("vizMain")
+                                             uiOutput("vizMain")
                                     )
                           )
                 )
@@ -55,7 +57,6 @@ ui <- stepsPage(skin = "magenta",styles = styles,
 server <- function(input,output,session){
 
   currentStep <- reactive({
-    paste(c(input$shinysteps_current,names(data())),collapse = "-")
   })
 
   inputData <- callModule(tableInput, "dataIn",
@@ -74,7 +75,7 @@ server <- function(input,output,session){
   output$debug <- renderPrint({
     #str(data())
     #input$shinysteps_current
-    currentStep()
+    input$step_current
   })
 
   output$dataMain <- renderUI({

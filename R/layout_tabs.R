@@ -1,6 +1,6 @@
 
 #' @export
-stepsPage <- function(stepsBody, skin = "magenta", styles = ""){
+stepsPage <- function(stepsHeader, stepsBody, skin = "magenta", styles = ""){
   #stepsPage <- function(stepsHeader, stepsBody, skin = "magenta", styles = ""){
   deps <- list(
     htmlDependency("font-awesome", "4.1.0",
@@ -31,7 +31,7 @@ stepsPage <- function(stepsBody, skin = "magenta", styles = ""){
   stepsJS <- tags$script(paste0(readLines(jsfile),collapse="\n"))
 
   page <- shiny::bootstrapPage(
-    #stepsHeader,
+    stepsHeader,
     stepsBody,
     stepsJS,
     stepsCSS(styles)
@@ -44,30 +44,34 @@ stepsPage <- function(stepsBody, skin = "magenta", styles = ""){
 
 #' @export
 stepsHeader <- function(..., height = NULL, show = TRUE){
-  div(class="fixed-header",
-      ...,
-      stepsHeaderJS(height = height, show = show)
+  headerOpts <- list(
+    height = height,
+    show = show
+  )
+  div(class="fixed-header", "data-value" = jsonlite::toJSON(headerOpts,auto_unbox = TRUE),
+      ...
   )
 }
 
-#' @export
-stepsBody <- function(..., initStep = NULL){
 
+
+#' @export
+stepsBody <- function(..., selected = NULL){
   steps <- list(...)
   ids <- map(steps,"id")
 
-  if(!is.null(initStep)){
-    if(!initStep %in% ids) stop("initStep must be one of: ", paste(ids,collapse=", "))
+  if(!is.null(selected)){
+    if(!selected %in% ids) stop("selected must be one of: ", paste(ids,collapse=", "))
   }else{
-    initStep <- ids[1]
+    selected <- ids[1]
   }
 
   sidebar <-  map(steps,"sidebar")
   main <-  map(steps,"main")
 
   tagList(
-    #div(id = "stepsPage",
-      useShinyjs(),
+    div(id = "stepsPage", "data-selected" = selected,
+      #useShinyjs(),
       #column(3,
              div(id="sidebar",
                  sidebar
@@ -79,12 +83,12 @@ stepsBody <- function(..., initStep = NULL){
              # tabsetPanel(id = "tabs", type = "pills",
              #             unlist(main, recursive = FALSE)
              # ),
-             do.call("tabsetPanel", c(id = "tabs", type = "pills",
+             do.call("tabsetPanel", c(id = "steps_tabs", type = "pills",
                                       unlist(main, recursive = FALSE))
              ),
-             stepsBodyJS(ids,initStep)
+             stepsBodyJS(ids,selected)
              )
-    #)
+    )
     #extendShinyjs(text = stepsExtendJS)
     #inlineCSS(styles)
   )
@@ -149,20 +153,11 @@ buildMainStep <- function(stepId,title = NULL, contents){
 }
 
 
-stepsHeaderJS <- function(height, show){
-  headerOpts <- list(
-    height = height,
-    show = show
-  )
-  tags$script(paste0("var headerOpts = ",jsonlite::toJSON(headerOpts,auto_unbox = TRUE)),";")
-  tags$script("")
-}
-
-stepsBodyJS <- function(ids,initStep){
+stepsBodyJS <- function(ids,selected){
   #shinyStepIds <- paste0("var shinyStepIds = ['",paste0(ids,collapse = "','"),"']")
-  #initStep <- paste0("var initStep = '",initStep,"';")
+  #selected <- paste0("var selected = '",selected,"';")
   # tags$script(
-  #   paste(shinyStepIds,initStep,sep = "\n")
+  #   paste(shinyStepIds,selected,sep = "\n")
   # )
   js <- readLines(system.file("srcjs/steps-extend.js",package = "shinysteps"))
   tags$script("")

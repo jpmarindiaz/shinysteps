@@ -1,4 +1,3 @@
-
 // Sideout
 // https://github.com/mango/slideout
 
@@ -33,18 +32,13 @@ function handleSmallScreen(jmediaquery) {
 
 
 
+// STEPS FUNS
 
+toggleSidebarSteps = function(currentStep) {
 
-toggleSteps = function() {
     var shinyStepIds = $("#sidebar").children().map(function() {
         return this.id
-    }).toArray();
-    console.log("stepIds", shinyStepIds)
-    var shinyStepIds = ["step1", "step2"];
-
-    var currentStep = $(".step.active")[0].id;
-    currentStep = currentStep.replace("sidebar_", "");
-    console.log("toggleCurrent", currentStep);
+    }).toArray().map(function(s) { return s.replace("sidebar_", "") });
 
     var otherSteps = shinyStepIds.filter(function(i) {
         return i != currentStep
@@ -56,10 +50,6 @@ toggleSteps = function() {
     $("#sidebar_" + currentStep + "_contents").show();
     $("#sidebar_" + currentStep + "_triangle-closed").hide();
     $("#sidebar_" + currentStep + "_triangle-open").show();
-
-    // if (typeof Shiny != "undefined") {
-    //     Shiny.onInputChange("shinysteps_current", currentStep);
-    // }
 
     // Hide all other steps - sidebar
     otherSteps.map(function(s) {
@@ -76,9 +66,75 @@ toggleSteps = function() {
         $("#main_" + s).hide();
     });
 
-    Shiny.onInputChange("step_current", currentStep);
+    if (typeof Shiny != "undefined") {
+        Shiny.onInputChange("step_current", currentStep);
+    }
 
 }
+
+switchToTab = function(step) {
+    var tabIds = $(".tab-pane").map(function() { return this.id }).toArray();
+    //var activeTabId = $(".tab-pane.active").map(function(){return this.id}).toArray()[0];
+    var currentStepId = parseInt(step.replace("step", ""));
+    var activeTabId = tabIds[currentStepId - 1];
+    // console.log("activeTabId", activeTabId)
+    $('.nav-pills a[href="#' + activeTabId + '"]').tab('show');
+}
+
+//
+
+
+
+// if(shinyStepIds.length == 1){
+//     $(".clickable").css("cursor", "auto");
+// }
+
+var headerOpts = $(".fixed-header").data("value");
+
+if (!headerOpts.show) {
+    $(".fixed-header").hide();
+    $('.slideout-menu').css("top", "0px");
+    $('.slideout-panel').css("margin-top", "0px");
+} else {
+    $('.fixed-header').css("height", headerOpts.height + "px");
+    $('.slideout-menu').css("top", headerOpts.height + "px");
+    $('.slideout-panel').css("margin-top", headerOpts.height + "px");
+}
+
+$(document).ready(function() {
+    var initStep = $("#stepsPage").data("selected");
+    console.log("iniStep", initStep)
+    // toggleSidebarSteps(initStep); 
+    // switchToTab(initStep);
+    // weird see https: //groups.google.com/forum/#!topic/shiny-discuss/sDhULZUt03A
+    setTimeout(function() {
+        toggleSidebarSteps(initStep);
+        switchToTab(initStep);
+    }, 0);
+
+});
+
+
+$(document).on("click", "#steps_tabs a", function(){
+  $("a").click(function(e) {
+
+    var shinyStepIds = $("#sidebar").children().map(function() {
+        return this.id
+    }).toArray().map(function(s) { return s.replace("sidebar_", "") });
+    
+    var clickedTab = $(this).attr('href').replace("#", "");
+    console.log("clickedTab", clickedTab)
+
+    var tabIds = $(".tab-pane").map(function() { return this.id }).toArray();
+    console.log("tabIds", tabIds)
+
+    var tabIdx = tabIds.indexOf(clickedTab);
+    console.log("Cliked Tab IDX", tabIdx)
+
+    toggleSidebarSteps(shinyStepIds[tabIdx]);
+
+  });
+});
 
 
 $(document).on("click", ".clickable", function() {
@@ -99,17 +155,12 @@ $(document).on("click", ".clickable", function() {
         // console.log("step class", "#" + step)
         $("#" + step).addClass("active");
 
-        toggleSteps();
+        var currentStep = $(".step.active")[0].id;
+        currentStep = currentStep.replace("sidebar_", "");
+        // console.log("toggleCurrent", currentStep);
 
-        var tabIds = $(".tab-pane").map(function(){return this.id}).toArray();
-        //var activeTabId = $(".tab-pane.active").map(function(){return this.id}).toArray()[0];
-        console.log("TabIds", tabIds)
-        var currentStepId = parseInt(currentStep.replace("step", ""));
-        var activeTabId = tabIds[currentStepId-1];
-        console.log("activeTabId", activeTabId)
-        $('.nav-pills a[href="#'+activeTabId+'"]').tab('show');
+        toggleSidebarSteps(currentStep);
+        switchToTab(currentStep);
+
     });
-
-
 });
-
