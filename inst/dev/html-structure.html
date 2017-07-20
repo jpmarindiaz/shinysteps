@@ -24,11 +24,15 @@
     .fixed-header {
         position: fixed;
         top: 0;
+        /*height: 30px;*/
         width: 100%;
-        height: 30px;
         backface-visibility: hidden;
         z-index: 2;
         background-color: red;
+    }
+
+    #sidebar {
+        background-color: #ccc;
     }
     
     .slideout-menu {
@@ -84,6 +88,7 @@
 <body>
     <div class="fixed-header">
         <span>This is a header</span>
+        <h3>More info</h3>
     </div>
     <div id="sidebar">
         <div id="sidebar_step1">

@@ -98,7 +98,7 @@ stepsBody <- function(..., selected = NULL){
 stepPanel <- function(id, sidebarStep, mainStep){
   list(
     id = id,
-    sidebar = div(id=paste0("sidebar_",id), class = "step active",
+    sidebar = div(id=paste0("sidebar_",id), class = "step",
                   buildSidebarStep(id,sidebarStep$title,sidebarStep$contents)
     ),
     main = buildMainStep(id, mainStep$title, mainStep$contents)
@@ -131,7 +131,7 @@ buildSidebarStep <- function(stepId, title = NULL, contents){
            )
         )
     ),
-    div(id=paste0("sidebar_",stepId,"_contents"), class = "clickable",
+    div(id=paste0("sidebar_",stepId,"_contents"), class = "",
         contents
     )
   )

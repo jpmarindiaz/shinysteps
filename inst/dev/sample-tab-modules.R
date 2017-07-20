@@ -14,13 +14,13 @@ jsCode <- ''
 
 ui <- stepsPage(skin = "magenta",styles = styles,
                 stepsHeader(show = TRUE, height = 50,
-                            #useShinyjs(),
-                            #extendShinyjs(text = jsCode),
                             verbatimTextOutput("debug"),
-                            #pagerButtons("hola","Prev","Next"),
+                            pagerButtons("hola","Prev","Next"),
+                            prevStepButton("prev"),
+                            nextStepButton("next"),
                             br()
                 ),
-                stepsBody(selected = "step2",
+                stepsBody(selected = "step1",
                           stepPanel(id="step1",
                                     sidebarStep(title = "Cargar Datos",
                                                 p("sidebar step1"),
@@ -32,9 +32,11 @@ ui <- stepsPage(skin = "magenta",styles = styles,
                                                 br()
                                     ),
                                     mainStep(title = "Datos",
+                                             jumpStepButton("to3","Next","step2"),
                                              p("Main step1"),
                                              uiOutput("dataMain"),
-                                             pagerButtons("hola","Prev","Next")
+                                             #pagerButtons("hola","Prev","Next"),
+                                             br()
                                     )
                           ),
                           stepPanel(id="step2",
@@ -74,7 +76,6 @@ server <- function(input,output,session){
 
   output$debug <- renderPrint({
     #str(data())
-    #input$shinysteps_current
     input$step_current
   })
 
@@ -89,11 +90,11 @@ server <- function(input,output,session){
   })
 
   output$debugData <- renderPrint({
-    str(inputData())
+    #str(inputData())
   })
 
   output$debugViz <- renderPrint({
-    str(data())
+    #str(data())
   })
 
   output$vizSide <- renderUI({
