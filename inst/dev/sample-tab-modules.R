@@ -13,7 +13,7 @@ jsCode <- ''
 
 
 ui <- stepsPage(skin = "magenta",styles = styles,
-                stepsHeader(show = TRUE, height = 50,
+                stepsHeader(show = FALSE, height = 50,
                             verbatimTextOutput("debug"),
                             pagerButtons("hola","Prev","Next"),
                             prevStepButton("prev"),
@@ -23,6 +23,9 @@ ui <- stepsPage(skin = "magenta",styles = styles,
                 stepsBody(selected = "step1",
                           stepPanel(id="step1",
                                     sidebarStep(title = "Cargar Datos",
+                                                pagerButtons("hola","Prev","Next"),
+                                                prevStepButton("prev"),
+                                                nextStepButton("next"),
                                                 p("sidebar step1"),
                                                 tableInputUI("dataIn", choices = list("Copiar & Pegar"="pasted",
                                                                                       "Cargar"="fileUpload",
