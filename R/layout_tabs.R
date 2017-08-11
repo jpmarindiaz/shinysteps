@@ -70,7 +70,7 @@ stepsBody <- function(..., selected = NULL){
   main <-  map(steps,"main")
 
   tagList(
-    div(id = "stepsPage", "data-selected" = selected,
+    div(id = "stepsPage", "data-selected" = selected),
       #useShinyjs(),
       #column(3,
              div(id="sidebar",
@@ -88,7 +88,7 @@ stepsBody <- function(..., selected = NULL){
              ),
              stepsBodyJS(ids,selected)
              )
-    )
+    #)
     #extendShinyjs(text = stepsExtendJS)
     #inlineCSS(styles)
   )
