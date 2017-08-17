@@ -122,11 +122,15 @@ toggleSidebarSteps = function() {
 switchToTab = function() {
     var step = getSteps().activeStep;
     var tabIds = $(".tab-pane").map(function() { return this.id }).toArray();
+    console.log("switchToTab active step", step)
+    console.log("switchToTab tabIds", tabIds)
     //var activeTabId = $(".tab-pane.active").map(function(){return this.id}).toArray()[0];
     var currentStepId = parseInt(step.replace("step", ""));
     var activeTabId = tabIds[currentStepId - 1];
     // console.log("activeTabId", activeTabId)
-    $('.nav-pills a[href="#' + activeTabId + '"]').tab('show');
+    // $('.nav-pills a[href="#' + activeTabId + '"]').tab('show');
+    $('.nav-pills [data-toggle="tab"] [data-value='+ currentStepId +']').tab('show');
+    
 }
 
 //
@@ -204,6 +208,7 @@ $(document).on("click", "#steps_tabs a", function(e) {
     var shinyStepIds = steps.ids;
 
     var clickedTab = $(this).attr('href').replace("#", "");
+    // ClickedTab with basename - when app is deployed href is the full path
     clickedTab = clickedTab.split('/').reverse()[0];
     console.log("clickedTab", clickedTab)
 

@@ -3,8 +3,8 @@ title: shinysteps-test
 account: randommonkey
 server: shinyapps.io
 appId: 205478
-bundleId: 943745
+bundleId: 943763
 url: https://randommonkey.shinyapps.io/shinysteps-test/
-when: 1502940496.61698
+when: 1502941260.42306
 asMultiple: FALSE
 asStatic: FALSE
