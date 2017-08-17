@@ -10,8 +10,6 @@ styles <- "#sidebar{background-color: #f9f9f9}"
 
 ui <- stepsPage(skin = "magenta",styles = styles,
           stepsHeader(show = TRUE, height = 50,
-                      #useShinyjs(),
-                      #extendShinyjs(text = jsCode),
                       verbatimTextOutput("debug"),
 
                       br()
@@ -105,17 +103,6 @@ server <- function(input,output,session){
       renderPrint(str(data))
     )
   })
-
-  # observeEvent(input$btn_visualize, {
-  #   nextStep <- "step2"
-  #   current <- input$shinysteps_current
-  #   steps <- input$shinysteps_stepIds
-  #   session$sendCustomMessage("nextStep", nextStep)
-  # })
-
-  # observe({
-  #   js$togglePages()
-  # })
 
 }
 

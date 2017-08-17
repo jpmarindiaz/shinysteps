@@ -30,25 +30,7 @@ function handleSmallScreen(jmediaquery) {
     }
 }
 
-// STEPS
 
-// if(shinyStepIds.length == 1){
-//     $(".clickable").css("cursor", "auto");
-// }
-
-// var headerOpts = $(".fixed-header").data("value");
-
-// if (!headerOpts.show) {
-//     $(".fixed-header").hide();
-//     // $('.slideout-menu').css("top", "0px");
-//     // $('.slideout-panel').css("margin-top", "0px");
-// } else {
-//     // $('.fixed-header').css("height", headerOpts.height + "px");
-//     // $('.slideout-menu').css("top", headerOpts.height + "px");
-//     // $('.slideout-panel').css("margin-top", headerOpts.height + "px");
-//     $('#sidebar').css("top", $(".fixed-header").css("height"));
-//     $('#main').css("margin-top", $(".fixed-header").css("height"));
-// }
 
 // STEPS FUNS
 
@@ -77,6 +59,26 @@ setActiveStep = function(step) {
     $('#stepsPage').data('selected', step);
 }
 
+// STEPS
+
+if(getSteps().ids.length == 1){
+    $(".clickable").css("cursor", "auto");
+}
+
+// var headerOpts = $(".fixed-header").data("value");
+
+// if (!headerOpts.show) {
+//     $(".fixed-header").hide();
+//     // $('.slideout-menu').css("top", "0px");
+//     // $('.slideout-panel').css("margin-top", "0px");
+// } else {
+//     // $('.fixed-header').css("height", headerOpts.height + "px");
+//     // $('.slideout-menu').css("top", headerOpts.height + "px");
+//     // $('.slideout-panel').css("margin-top", headerOpts.height + "px");
+//     $('#sidebar').css("top", $(".fixed-header").css("height"));
+//     $('#main').css("margin-top", $(".fixed-header").css("height"));
+// }
+
 
 
 // toggleSidebarSteps = function(currentStep) {
@@ -87,7 +89,7 @@ toggleSidebarSteps = function() {
     var otherSteps = steps.otherSteps;
 
     var currentStep = steps.activeStep;
-    console.log("currentStep in Toggle: ", currentStep)
+    if(debug){console.log("currentStep in Toggle: ", currentStep)}
 
     // Show current step - sidebar
     $("#sidebar_" + currentStep + "_contents").show();
@@ -100,53 +102,24 @@ toggleSidebarSteps = function() {
         $("#sidebar_" + s + "_triangle-open").hide();
         $("#sidebar_" + s + "_triangle-closed").show();
     });
-
-    // // Show current step - main
-    // $("#main_" + currentStep).show();
-
-    // // Hide all other steps - main
-    // otherSteps.map(function(s) {
-    //     $("#main_" + s).hide();
-    // });
-
     if (typeof Shiny != "undefined") {
-        Shiny.onInputChange("step_current", currentStep);
+        Shiny.onInputChange("shinysteps_current", currentStep);
     }
-
-    // $('#stepsPage').data('selected', currentStep);
-    // $(".step").removeClass("active");
-    // $("#sidebar_" + currentStep).addClass("active");
-
 }
 
 switchToTab = function() {
     var activeStep = getSteps().activeStep;
     var tabIds = $(".tab-pane").map(function() { return this.id }).toArray();
-    console.log("switchToTab active step", activeStep)
-    console.log("switchToTab tabIds", tabIds)
-    //var activeTabId = $(".tab-pane.active").map(function(){return this.id}).toArray()[0];
-    // var currentStepId = parseInt(step.replace("step", ""));
-    // var activeTabId = tabIds[currentStepId - 1];
-    // console.log("activeTabId", activeTabId)
-    // $('.nav-pills a[href="#' + activeTabId + '"]').tab('show');
+    if(debug){console.log("switchToTab active step", activeStep)}
+    if(debug){console.log("switchToTab tabIds", tabIds)}
     $('[data-toggle="tab"][data-value='+ activeStep +']').tab('show');
     
 }
 
-//
-
-
-
-
-
 $(document).ready(function() {
     var initStep = $("#stepsPage").data("selected");
-    console.log("initStep", initStep)
-
+    if(debug){console.log("initStep", initStep)}
     setActiveStep(initStep);
-
-    // toggleSidebarSteps(initStep); 
-    // switchToTab(initStep);
     // weird see https: //groups.google.com/forum/#!topic/shiny-discuss/sDhULZUt03A
     setTimeout(function() {
 
@@ -166,7 +139,7 @@ $(document).ready(function() {
 });
 
 $('.fixed-header').on('shiny:visualchange', function(event) {
-    console.log("Header height", $(".fixed-header").css("height"))
+    if(debug){console.log("Header height", $(".fixed-header").css("height"))}
     var headerOpts = $(".fixed-header").data("value");
     if (!headerOpts.show) {
         $(".fixed-header").hide();
@@ -176,103 +149,44 @@ $('.fixed-header').on('shiny:visualchange', function(event) {
     }
 });
 
-
-
 $(document).on("click", ".clickable", function(e) {
-
-    // var selector = ".clickable";
-    // $(selector).click(function(e) {
     var nextStep = e.currentTarget.id;
-    console.log("CLICK", nextStep);
-
+    if(debug){console.log("CLICK", nextStep);}
     nextStep = nextStep.replace("sidebar_", "");
     nextStep = nextStep.replace("_title", "");
-    // currentStep = step.replace("_contents", "");
-
-    // var currentStep = $(".step.active")[0].id;
-    // currentStep = currentStep.replace("sidebar_", "");
-    console.log("click clickable: ", nextStep);
-
-    // var nextStep = getSteps().activeStep;
+    if(debug){console.log("click clickable: ", nextStep);}
     setActiveStep(nextStep);
     toggleSidebarSteps(nextStep);
     switchToTab();
-    // });
 });
 
-
-$(document).on("click", "#steps_tabs a", function(e) {
-    // $("a").click(function(e) {
-
+$(document).on("click", "#steps_tabs a", function(e) { 
     var steps = getSteps();
     var shinyStepIds = steps.ids;
-
      var clickedStep = $(this).attr('data-value');
-     console.log("clickedStep", clickedStep)
-
-    // var clickedTab = $(this).attr('href').replace("#", "");
-    // // ClickedTab with basename - when app is deployed href is the full path
-    // clickedTab = clickedTab.split('/').reverse()[0];
-    // console.log("clickedTab", clickedTab)
-
-    // var tabIds = $(".tab-pane").map(function() { return this.id }).toArray();
-    // console.log("tabIds", tabIds)
-
-    // var tabIdx = tabIds.indexOf(clickedTab);
-    // console.log("Cliked Tab IDX", tabIdx)
-    // console.log("shinyStepIds", shinyStepIds)
-
-    // var currentStep = shinyStepIds[tabIdx];
-    // console.log("Current Step in tabs", currentStep)
-
+     if(debug){console.log("clickedStep", clickedStep)}
     setActiveStep(clickedStep);
     toggleSidebarSteps();
-
-    // });
 });
 
-
-
-
 $(document).on("click", ".btn-step-jump", function() {
-    // var selector = this;
-    // $(selector).click(function(e) {
     var step = $(".btn-step-jump").data("jumpto");
-    console.log("jumpto", step)
-
-    // $(".step").removeClass("active");
-    // $("#sidebar_" + step).addClass("active");
-
+    if(debug){console.log("jumpto", step)}
     setActiveStep(step);
     toggleSidebarSteps();
     switchToTab();
-
-    // });
 });
 
 $(document).on("click", ".btn-step-prev", function() {
-    // var selector = this;
-    // $(selector).click(function(e) {
-
     setActiveStep(getSteps().prevStep);
     toggleSidebarSteps();
     switchToTab();
-
-    // });
 });
 
 $(document).on("click", ".btn-step-next", function() {
-    // var selector = this;
-    // $(selector).click(function(e) {
     var step = $(".btn-step-jump").data("jumpto");
-    console.log("jumpto", step)
-
-    // $(".step").removeClass("active");
-    // $("#sidebar_" + step).addClass("active");
-
+    if(debug){console.log("jumpto", step)}
     setActiveStep(getSteps().nextStep);
     toggleSidebarSteps();
     switchToTab();
-
-    // });
 });

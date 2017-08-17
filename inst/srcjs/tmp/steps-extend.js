@@ -1,34 +1,34 @@
-// // Sideout
-// // https://github.com/mango/slideout
+// Sideout
+// https://github.com/mango/slideout
 
-// var slideout = new Slideout({
-//     'menu': document.getElementById('sidebar'),
-//     'panel': document.getElementById('main'),
-//     'side': 'left',
-//     'padding': 300,
-//     'tolerance': 70
-// });
+var slideout = new Slideout({
+    'menu': document.getElementById('sidebar'),
+    'panel': document.getElementById('main'),
+    'side': 'left',
+    'padding': 300,
+    'tolerance': 70
+});
 
-// // Toggle button
-// document.querySelector('.btn-hamburger').addEventListener('click', function() {
-//     slideout.toggle();
-// });
-// // Enable touch
-// slideout.enableTouch();
+// Toggle button
+document.querySelector('.btn-hamburger').addEventListener('click', function() {
+    slideout.toggle();
+});
+// Enable touch
+slideout.enableTouch();
 
-// // Show collapsed sidebar only on small screens
-// var jmediaquery = window.matchMedia("(min-width: 480px)")
-// jmediaquery.addListener(handleSmallScreen);
-// handleSmallScreen(jmediaquery);
+// Show collapsed sidebar only on small screens
+var jmediaquery = window.matchMedia("(min-width: 480px)")
+jmediaquery.addListener(handleSmallScreen);
+handleSmallScreen(jmediaquery);
 
-// function handleSmallScreen(jmediaquery) {
-//     if (!jmediaquery.matches) {
-//         // orientation changed
-//         slideout.open();
-//     } else {
-//         slideout.close();
-//     }
-// }
+function handleSmallScreen(jmediaquery) {
+    if (!jmediaquery.matches) {
+        // orientation changed
+        slideout.open();
+    } else {
+        slideout.close();
+    }
+}
 
 // STEPS
 
@@ -52,13 +52,7 @@
 
 // STEPS FUNS
 
-
-// Shinyjs Extend
-
-
-
-
-shinyjs.getSteps = function() {
+getSteps = function() {
     var shinyStepIds = $("#sidebar").children().map(function() {
         return this.id
     }).toArray().map(function(s) { return s.replace("sidebar_", "") });
@@ -128,11 +122,15 @@ toggleSidebarSteps = function() {
 switchToTab = function() {
     var step = getSteps().activeStep;
     var tabIds = $(".tab-pane").map(function() { return this.id }).toArray();
+    console.log("switchToTab active step", step)
+    console.log("switchToTab tabIds", tabIds)
     //var activeTabId = $(".tab-pane.active").map(function(){return this.id}).toArray()[0];
     var currentStepId = parseInt(step.replace("step", ""));
     var activeTabId = tabIds[currentStepId - 1];
     // console.log("activeTabId", activeTabId)
-    $('.nav-pills a[href="#' + activeTabId + '"]').tab('show');
+    // $('.nav-pills a[href="#' + activeTabId + '"]').tab('show');
+    $('.nav-pills [data-toggle="tab"] [data-value='+ currentStepId +']').tab('show');
+    
 }
 
 //
@@ -143,7 +141,7 @@ switchToTab = function() {
 
 $(document).ready(function() {
     var initStep = $("#stepsPage").data("selected");
-    console.log("iniStep", initStep)
+    console.log("initStep", initStep)
 
     setActiveStep(initStep);
 
@@ -209,20 +207,25 @@ $(document).on("click", "#steps_tabs a", function(e) {
     var steps = getSteps();
     var shinyStepIds = steps.ids;
 
-    var clickedTab = $(this).attr('href').replace("#", "");
-    console.log("clickedTab", clickedTab)
+     var clickedStep = $(this).attr('data-value');
+     console.log("clickedStep", clickedStep)
 
-    var tabIds = $(".tab-pane").map(function() { return this.id }).toArray();
-    console.log("tabIds", tabIds)
+    // var clickedTab = $(this).attr('href').replace("#", "");
+    // // ClickedTab with basename - when app is deployed href is the full path
+    // clickedTab = clickedTab.split('/').reverse()[0];
+    // console.log("clickedTab", clickedTab)
 
-    var tabIdx = tabIds.indexOf(clickedTab);
-    console.log("Cliked Tab IDX", tabIdx)
-    console.log("shinyStepIds", shinyStepIds)
+    // var tabIds = $(".tab-pane").map(function() { return this.id }).toArray();
+    // console.log("tabIds", tabIds)
 
-    var currentStep = shinyStepIds[tabIdx];
-    console.log("Current Step in tabs", currentStep)
+    // var tabIdx = tabIds.indexOf(clickedTab);
+    // console.log("Cliked Tab IDX", tabIdx)
+    // console.log("shinyStepIds", shinyStepIds)
 
-    setActiveStep(currentStep);
+    // var currentStep = shinyStepIds[tabIdx];
+    // console.log("Current Step in tabs", currentStep)
+
+    setActiveStep(clickedStep);
     toggleSidebarSteps();
 
     // });
