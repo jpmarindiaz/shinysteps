@@ -1,12 +1,9 @@
 
 
 library(shinysteps)
-library(shinyjs)
-library(tidyverse)
 library(dsAppModules)
 
 styles <- "
-
 
 
 "
