@@ -13,7 +13,7 @@ styles <- "
 
 
 ui <- stepsPage(skin = "magenta",styles = styles,
-          stepsHeader(show = TRUE, height = 0,
+          stepsHeader(show = FALSE, height = 0,
                       verbatimTextOutput("debug")
           ),
           stepsBody(selected = "step1",

@@ -65,19 +65,17 @@ if(getSteps().ids.length == 1){
     $(".clickable").css("cursor", "auto");
 }
 
-// var headerOpts = $(".fixed-header").data("value");
+var headerOpts = $(".fixed-header").data("value");
 
-// if (!headerOpts.show) {
-//     $(".fixed-header").hide();
-//     // $('.slideout-menu').css("top", "0px");
-//     // $('.slideout-panel').css("margin-top", "0px");
-// } else {
-//     // $('.fixed-header').css("height", headerOpts.height + "px");
-//     // $('.slideout-menu').css("top", headerOpts.height + "px");
-//     // $('.slideout-panel').css("margin-top", headerOpts.height + "px");
-//     $('#sidebar').css("top", $(".fixed-header").css("height"));
-//     $('#main').css("margin-top", $(".fixed-header").css("height"));
-// }
+if (!headerOpts.show) {
+    $(".fixed-header").hide();
+    $('.slideout-menu').css("top", "0px");
+    $('.slideout-panel').css("margin-top", "0px");
+} else {
+    $('.fixed-header').css("height", headerOpts.height + "px");
+    $('#sidebar').css("top", $(".fixed-header").css("height"));
+    $('#main').css("margin-top", $(".fixed-header").css("height"));
+}
 
 
 

@@ -10,7 +10,8 @@ Depends:
     R (>= 3.1.2),
     htmltools,
     shiny,
-    shinyjs
+    shinyjs,
+    purrr
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
