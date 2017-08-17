@@ -5,14 +5,16 @@ library(shinyjs)
 library(tidyverse)
 library(dsAppModules)
 
-styles <- "#sidebar{background-color: #f9f9f9}"
+styles <- "
+
+
+
+"
 
 
 ui <- stepsPage(skin = "magenta",styles = styles,
-          stepsHeader(show = TRUE, height = 50,
-                      verbatimTextOutput("debug"),
-
-                      br()
+          stepsHeader(show = TRUE, height = 0,
+                      verbatimTextOutput("debug")
           ),
           stepsBody(selected = "step1",
                     stepPanel(id="step1",

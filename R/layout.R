@@ -66,26 +66,17 @@ stepsBody <- function(..., selected = NULL){
 
   tagList(
     div(id = "stepsPage", "data-selected" = selected,
-      #useShinyjs(),
-      #column(3,
-             div(id="sidebar",
-                 sidebar
-       #      )
-      ),
-      #column(9,
-             div(id = "main",
-             tags$button(class = "btn-hamburger","="),
-             # tabsetPanel(id = "tabs", type = "pills",
-             #             unlist(main, recursive = FALSE)
-             # ),
-             do.call("tabsetPanel", c(id = "steps_tabs", type = "pills",
-                                      unlist(main, recursive = FALSE))
-             ),
-             stepsBodyJS(ids,selected)
-             )
+        div(id="sidebar",
+            sidebar
+        ),
+        div(id = "main",
+            tags$button(class = "btn-hamburger","="),
+              do.call("tabsetPanel", c(id = "steps_tabs", type = "pills",
+                                       unlist(main, recursive = FALSE))
+            ),
+            stepsBodyJS(ids,selected)
+        )
     )
-    #extendShinyjs(text = stepsExtendJS)
-    #inlineCSS(styles)
   )
 }
 
@@ -109,7 +100,7 @@ sidebarStep <- function(..., title = NULL){
 #' @export
 mainStep <- function(...,title = NULL){
   #tagList(list(...))
-  contents <- list(...)
+  contents <- div(class = "tab-container", list(...))
   list(title = title, contents = contents)
 }
 
@@ -117,16 +108,16 @@ buildSidebarStep <- function(stepId, title = NULL, contents){
   title <- title %||% stepId
   tagList(
     div(id=paste0("sidebar_",stepId,"_title"), class = "clickable",
-        h5(title,
+        h5(title, class = "sidebar_title",
            span(id=paste0("sidebar_",stepId,"_triangle-closed"),
                 icon("chevron-right", class = "fa-1x")
            ),
            span(id=paste0("sidebar_",stepId,"_triangle-open"),
-                       icon("chevron-down", class = "fa-1x")
+                icon("chevron-down", class = "fa-1x")
            )
         )
     ),
-    div(id=paste0("sidebar_",stepId,"_contents"), class = "",
+    div(id=paste0("sidebar_",stepId,"_contents"), class = "sidebar_content",
         contents
     )
   )
@@ -139,9 +130,7 @@ buildMainStep <- function(stepId,title = NULL, contents){
   title <- title %||% stepId
   tagList(
     tabPanel(id = stepId, title,
-             fluidRow(
                contents
-             )
     )
   )
 

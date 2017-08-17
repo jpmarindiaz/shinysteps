@@ -2,9 +2,12 @@
 FONTS
 */
 
-/*@import url(//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic);*/
-/*@import url(//fonts.googleapis.com/css?family=Kaushan+Script);*/
+@import url(https://fonts.googleapis.com/css?family=Lato|Muli|Lora:400,700,400italic);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i);
+@import url('https://fonts.googleapis.com/css?family=Fira+Sans+Condensed:200,300,400,500,600,700,800,900');
+@import "hamburgers.css";
 
+html{-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}
 
 .hidden{
     display: none;
@@ -15,6 +18,7 @@ FONTS
 body {
     width: 100%;
     height: 100%;
+    font-family: 'Open Sans',sans-serif;
 }
 
 .fixed-header {
@@ -73,17 +77,71 @@ body {
 
 /*Shiny Steps*/
 
+
+.nav-pills > li {
+    display: table-cell;
+    width: 50%;
+    padding-right: 0px;
+    height: auto;
+    vertical-align: bottom;
+    position: relative;
+    background-color: #f4f4f6;
+}
+.nav-pills>li>a {
+    border-radius: 0px;
+    color: #1d1d1b;
+    text-align: center;
+    border: 1px solid #444;
+}
+
+.nav-pills li {
+    margin-left: 0px !important;
+}
+
+.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
+    color: #c6c6c6;
+    background-color: #1d1d1b;
+}
+
+
+
+
+
+
 #sidebar{
-    border-right: 1px solid #ccc;
+    background-color: #f4f4f6;
+    /*border-right: 1px solid #ccc;*/
     padding: 5px;
+}
+.sidebar_title{
+  color: #c40f7f;
+  font-family: 'Open Sans',sans-serif;
+}
+
+.sidebar_content{
+    padding: 10px;
 }
 
 #main{
-    padding: 5px;
+    padding: 0px;
 }
 
 .clickable {
     cursor: pointer;
+}
+
+.tab-container{
+    padding: 10px 5px 5px 5px;
+}
+
+./*tableInput{
+    padding: 10px;
+}*/
+
+
+
+.tableEditCol{
+    padding: 5px;
 }
 
 
