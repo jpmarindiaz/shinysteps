@@ -8,27 +8,6 @@ library(dsAppModules)
 styles <- "#sidebar{background-color: #f9f9f9}"
 
 
-jsCode <- '
-
-
-shinyjs.togglePages = function(params){
-
-var selector = ".clickable";
-$(selector).click(function(e) {
-// console.log(e)
-var step = e.currentTarget.id;
-step = step.replace("sidebar_", "");
-step = step.replace("_title", "");
-currentStep = step.replace("_contents", "");
-toggleSteps(currentStep, shinyStepIds);
-});
-
-}
-'
-
-jsCode <- ''
-
-
 ui <- stepsPage(skin = "magenta",styles = styles,
           stepsHeader(show = TRUE, height = 50,
                       #useShinyjs(),

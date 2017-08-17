@@ -137,7 +137,7 @@ switchToTab = function() {
 
 $(document).ready(function() {
     var initStep = $("#stepsPage").data("selected");
-    console.log("iniStep", initStep)
+    console.log("initStep", initStep)
 
     setActiveStep(initStep);
 
@@ -204,6 +204,7 @@ $(document).on("click", "#steps_tabs a", function(e) {
     var shinyStepIds = steps.ids;
 
     var clickedTab = $(this).attr('href').replace("#", "");
+    clickedTab = clickedTab.split('/').reverse()[0];
     console.log("clickedTab", clickedTab)
 
     var tabIds = $(".tab-pane").map(function() { return this.id }).toArray();
