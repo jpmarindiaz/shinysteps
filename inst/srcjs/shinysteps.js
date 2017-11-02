@@ -107,7 +107,8 @@ toggleSidebarSteps = function() {
 
 switchToTab = function() {
     var activeStep = getSteps().activeStep;
-    var tabIds = $(".tab-pane").map(function() { return this.id }).toArray();
+    // var tabIds = $(".tab-pane").map(function() { return this.id }).toArray();
+    var tabIds = $(".tab-pane").map(function() { return this.text }).toArray();
     if(debug){console.log("switchToTab active step", activeStep)}
     if(debug){console.log("switchToTab tabIds", tabIds)}
     $('[data-toggle="tab"][data-value='+ activeStep +']').tab('show');

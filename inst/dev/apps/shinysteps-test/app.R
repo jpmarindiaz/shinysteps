@@ -9,7 +9,7 @@ styles <- "
 "
 
 
-ui <- stepsPage(skin = "magenta",styles = styles,
+ui <- stepsPage(skin = "magenta",styles = styles, debug = TRUE,
           stepsHeader(show = FALSE, height = 0,
                       verbatimTextOutput("debug")
           ),
@@ -24,7 +24,7 @@ ui <- stepsPage(skin = "magenta",styles = styles,
                                           verbatimTextOutput("debugData"),
                                           br()
                               ),
-                              mainStep(
+                              mainStep(title = "STEP1 Title",
                                 uiOutput("dataMain")
                               )
                     ),
@@ -33,7 +33,7 @@ ui <- stepsPage(skin = "magenta",styles = styles,
                                           verbatimTextOutput("debugViz"),
                                           uiOutput("vizSide")
                               ),
-                              mainStep(
+                              mainStep(title = "STEP2 Title",
                                 uiOutput("vizMain")
                               )
                     )
