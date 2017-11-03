@@ -107,11 +107,15 @@ toggleSidebarSteps = function() {
 
 switchToTab = function() {
     var activeStep = getSteps().activeStep;
+    var activeStepId = activeStep[activeStep.length-1];
     // var tabIds = $(".tab-pane").map(function() { return this.id }).toArray();
-    var tabIds = $(".tab-pane").map(function() { return this.text }).toArray();
+    // var tabIds = $(".tab-pane").map(function() { return this.id }).toArray().map(function(x){ return(x[x.length-1])});
     if(debug){console.log("switchToTab active step", activeStep)}
-    if(debug){console.log("switchToTab tabIds", tabIds)}
-    $('[data-toggle="tab"][data-value='+ activeStep +']').tab('show');
+    // if(debug){console.log("switchToTab tabIds", tabIds)}
+    //$('[data-toggle="tab"][data-value='+ activeStep +']').tab('show');
+    var href = $('[data-toggle="tab"]').attr("href");
+    href = href.slice(0, -1);
+    $('[data-toggle="tab"]a[href="'+ href + activeStepId +'"]').tab('show');
     
 }
 
@@ -162,8 +166,10 @@ $(document).on("click", ".clickable", function(e) {
 $(document).on("click", "#steps_tabs a", function(e) { 
     var steps = getSteps();
     var shinyStepIds = steps.ids;
-     var clickedStep = $(this).attr('data-value');
-     if(debug){console.log("clickedStep", clickedStep)}
+    // var clickedStep = $(this).attr('data-value');
+    var clickedStep = $(this).attr('href');
+    clickedStep = "step" + clickedStep[clickedStep.length-1];
+    if(debug){console.log("clickedStep", clickedStep)}
     setActiveStep(clickedStep);
     toggleSidebarSteps();
 });

@@ -24,7 +24,7 @@ ui <- stepsPage(skin = "magenta",styles = styles, debug = TRUE,
                                           verbatimTextOutput("debugData"),
                                           br()
                               ),
-                              mainStep(title = "STEP1 Title",
+                              mainStep(title = NULL,
                                 uiOutput("dataMain")
                               )
                     ),
