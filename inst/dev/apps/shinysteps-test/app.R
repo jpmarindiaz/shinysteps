@@ -3,46 +3,55 @@
 library(shinysteps)
 library(dsAppModules)
 
-styles <- "
+styles <- ""
 
-
-"
 
 
 ui <- stepsPage(skin = "magenta",styles = styles, debug = TRUE,
-          stepsHeader(show = FALSE, height = 0,
-                      verbatimTextOutput("debug")
-          ),
-          stepsBody(selected = "step1",
-                    stepPanel(id="step1",
-                              sidebarStep(title = "Cargar Datos",
-                                          #p("sidebar step1"),
-                                          tableInputUI("dataIn", choices = list("Copiar & Pegar"="pasted",
-                                                                                "Cargar"="fileUpload",
-                                                                                "Muestra"="sampleData"),
-                                                       selected = "sampleData"),
-                                          verbatimTextOutput("debugData"),
-                                          br()
-                              ),
-                              mainStep(title = NULL,
-                                uiOutput("dataMain")
-                              )
-                    ),
-                    stepPanel(id="step2",
-                              sidebarStep(title = "Visualizar",
-                                          verbatimTextOutput("debugViz"),
-                                          uiOutput("vizSide")
-                              ),
-                              mainStep(title = "STEP2 Title",
-                                uiOutput("vizMain")
-                              )
-                    )
-          )
+                stepsHeader(show = FALSE, height = 0,
+                            verbatimTextOutput("debug"),
+                            showDebugUI("showDebug")
+                ),
+                stepsBody(selected = "step1",
+                          stepPanel(id="step1",
+                                    sidebarStep(title = "Cargar Datos",
+                                                #p("sidebar step1"),
+                                                tableInputUI("dataIn", choices = list("Copiar & Pegar"="pasted",
+                                                                                      "Cargar"="fileUpload",
+                                                                                      "Muestra"="sampleData"),
+                                                             selected = "sampleData"),
+                                                verbatimTextOutput("debugData"),
+                                                br()
+                                    ),
+                                    mainStep(title = NULL,
+                                             uiOutput("dataMain")
+                                    )
+                          ),
+                          stepPanel(id="step2",
+                                    sidebarStep(title = "Visualizar",
+                                                verbatimTextOutput("debugViz"),
+                                                uiOutput("vizSide")
+                                    ),
+                                    mainStep(title = "STEP2 Title",
+                                             uiOutput("vizMain")
+                                    )
+                          ),
+                          stepPanel(id="step3",
+                                    sidebarStep(title = "Publish",
+                                                h4("Publish side")
+                                    ),
+                                    mainStep(title = "Publish",
+                                             h4("Publish main")
+                                    )
+                          )
+                )
 )
 
 
 
 server <- function(input,output,session){
+
+  callModule(showDebug, "showDebug")
 
   currentStep <- reactive({
     paste(c(input$shinysteps_current,names(data())),collapse = "-")
@@ -65,7 +74,8 @@ server <- function(input,output,session){
     #str(data())
     #input$shinysteps_current
     #currentStep()
-    input$step
+    #input$step
+
   })
 
   output$dataMain <- renderUI({
@@ -79,7 +89,8 @@ server <- function(input,output,session){
   })
 
   output$debugData <- renderPrint({
-    str(inputData())
+    #str(inputData())
+    str(session$clientData$url_hostname)
   })
 
   output$debugViz <- renderPrint({

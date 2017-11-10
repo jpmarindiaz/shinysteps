@@ -77,6 +77,10 @@ if (!headerOpts.show) {
     $('#main').css("margin-top", $(".fixed-header").css("height"));
 }
 
+// Adjust steps height
+var navWidth = 100/getSteps().ids.length;
+$(".nav-pills li").css("width", navWidth + "%");
+
 
 
 // toggleSidebarSteps = function(currentStep) {

@@ -44,6 +44,8 @@ stepsHeader <- function(..., height = NULL, show = TRUE){
     show = show
   )
   div(class="fixed-header", "data-value" = jsonlite::toJSON(headerOpts,auto_unbox = TRUE),
+      useShinyjs(),
+      showDebugUI("showDebug"),
       ...
   )
 }
