@@ -10,7 +10,8 @@ Depends:
     R (>= 3.1.2),
     htmltools,
     shiny,
-    shinyjs
+    shinyjs,
+    V8
 Imports:    
     purrr
 License: MIT + file LICENSE
